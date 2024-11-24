@@ -12,7 +12,8 @@ package com.mycompany.marketpulsemain;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import java.awt.BorderLayout;
@@ -31,10 +32,8 @@ public class Graphs extends javax.swing.JFrame {
         createCharts();
     }
 
-    private void createCharts() {
-        // Remove any existing components
 
-        // Create charts for each company
+    private void createCharts() {
         createChartForCompany("Amazon", data.getDates(), data.getAmazonCloseArray(), amazonChartPanel);
         createChartForCompany("Apple", data.getDates(), data.getAppleCloseArray(), appleChartPanel);
         createChartForCompany("Broadcom", data.getDates(), data.getBroadcomCloseArray(), broadcomChartPanel);
@@ -42,15 +41,14 @@ public class Graphs extends javax.swing.JFrame {
         createChartForCompany("Meta", data.getDates(), data.getMetaCloseArray(), metaChartPanel);
         createChartForCompany("Microsoft", data.getDates(), data.getMicrosoftCloseArray(), microsoftChartPanel);
         createChartForCompany("Qualcomm", data.getDates(), data.getQualcommCloseArray(), qualcommChartPanel);
-
     }
-
+    
     private void createChartForCompany(String companyName, String[] dates, double[] prices, javax.swing.JPanel panel) {
         // Create a dataset up to the current day
         XYSeries series = new XYSeries(companyName);
 
         for (int i = 0; i <= data.getDay(); i++) {
-            series.add(i, prices[i]);
+            series.add(i + 1, prices[i]); // Days start at 1
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection(series);
@@ -60,23 +58,57 @@ public class Graphs extends javax.swing.JFrame {
                 companyName + " Stock Prices",
                 "Day",
                 "Price",
-                dataset
+                dataset,
+                org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
         );
+
+        // Customize the chart
+        customizeChart(chart,companyName);
 
         // Remove any existing content in the panel
         panel.removeAll();
 
-        // Create a ChartPanel and add it to the JPanel
+        // Create a ChartPanel with fixed size
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setDomainZoomable(true);
-        chartPanel.setRangeZoomable(true);
+        chartPanel.setPreferredSize(new java.awt.Dimension(240, 160)); // Fixed size
+        chartPanel.setMinimumSize(new java.awt.Dimension(240, 160));
+        chartPanel.setMaximumSize(new java.awt.Dimension(240, 160));
+        chartPanel.setSize(new java.awt.Dimension(240, 160));
 
+        // Add the ChartPanel to the JPanel
         panel.setLayout(new BorderLayout());
         panel.add(chartPanel, BorderLayout.CENTER);
 
         // Refresh the panel
         panel.validate();
         panel.repaint();
+    }
+
+    private void customizeChart(JFreeChart chart, String companyName) {
+        XYPlot plot = chart.getXYPlot();
+
+        // Set fixed range for the x-axis (Day 1 to Day 23)
+        NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+        domain.setRange(0.0, 23.0);
+        domain.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(1));
+
+        // Set fixed range for the y-axis based on expected stock prices
+        if (companyName.equals("Meta")) {
+            NumberAxis range = (NumberAxis) plot.getRangeAxis();
+            range.setRange(500.0, 600.0); // Adjust based on your data
+            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
+        } else if (companyName.equals("Microsoft")) {
+            NumberAxis range = (NumberAxis) plot.getRangeAxis();
+            range.setRange(400.0, 500.0); // Adjust based on your data
+            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
+        } else {
+            NumberAxis range = (NumberAxis) plot.getRangeAxis();
+            range.setRange(150.0, 250.0); // Adjust based on your data
+            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
+        }
     }
 
 
@@ -96,7 +128,6 @@ public class Graphs extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         Title = new javax.swing.JLabel();
-        refreshButton = new javax.swing.JButton();
         appleChartPanel = new javax.swing.JPanel();
         amazonChartPanel = new javax.swing.JPanel();
         broadcomChartPanel = new javax.swing.JPanel();
@@ -143,13 +174,6 @@ public class Graphs extends javax.swing.JFrame {
         });
 
         Title.setText("Graphs");
-
-        refreshButton.setText("Refresh Graphs");
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout appleChartPanelLayout = new javax.swing.GroupLayout(appleChartPanel);
         appleChartPanel.setLayout(appleChartPanelLayout);
@@ -263,11 +287,7 @@ public class Graphs extends javax.swing.JFrame {
                                         .addComponent(metaChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(microsoftChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addGap(0, 88, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(refreshButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 416, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,8 +301,6 @@ public class Graphs extends javax.swing.JFrame {
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
-                .addGap(37, 37, 37)
-                .addComponent(refreshButton)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
@@ -299,7 +317,7 @@ public class Graphs extends javax.swing.JFrame {
                     .addComponent(microsoftChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(qualcommChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
 
         pack();
@@ -334,10 +352,6 @@ public class Graphs extends javax.swing.JFrame {
         newan.show();
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        createCharts();
-    }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -388,6 +402,5 @@ public class Graphs extends javax.swing.JFrame {
     private javax.swing.JPanel metaChartPanel;
     private javax.swing.JPanel microsoftChartPanel;
     private javax.swing.JPanel qualcommChartPanel;
-    private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }
