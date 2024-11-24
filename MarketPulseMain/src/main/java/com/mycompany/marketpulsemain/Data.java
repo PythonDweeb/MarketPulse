@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
  * @author vihaan G08244778
  */
 
+//added data class
 public class Data {
 
     // static for singleton
@@ -160,7 +161,6 @@ public class Data {
             datesLoaded = true;
         }
     }
-
     // Method to increment the day
     public void incrementDay() {
         if (day < DATA_SIZE - 1) {

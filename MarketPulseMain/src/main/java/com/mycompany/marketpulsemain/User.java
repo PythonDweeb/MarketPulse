@@ -9,6 +9,7 @@ package com.mycompany.marketpulsemain;
  * @author vihaan G08244778
  */
 
+//added user class
 public class User {
 
     // Singleton instance
