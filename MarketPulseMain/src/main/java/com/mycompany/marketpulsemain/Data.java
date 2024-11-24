@@ -246,9 +246,28 @@ public class Data {
     public double[] getAmazonCloseArray() {
         return amazonClose;
     }
-
-    public long[] getAmazonVolumeArray() {
-        return amazonVolume;
+    
+    public double[] getAppleCloseArray() {
+        return appleClose;
     }
-
+    
+    public double[] getBroadcomCloseArray() {
+        return broadcomClose;
+    }
+    
+    public double[] getGoogleCloseArray() {
+        return googleClose;
+    }
+    
+    public double[] getMetaCloseArray() {
+        return metaClose;
+    }
+    
+    public double[] getMicrosoftCloseArray() {
+        return microsoftClose;
+    }
+    
+    public double[] getQualcommCloseArray() {
+        return qualcommClose;
+    }
 }
