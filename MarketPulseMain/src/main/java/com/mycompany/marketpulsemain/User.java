@@ -17,27 +17,25 @@ public class User {
 
     // User attributes
     private double totalCash;
-    private double investmentInAmazon;
-    private double investmentInApple;
-    private double investmentInBroadcom;
-    private double investmentInGoogle;
-    private double investmentInMeta;
-    private double investmentInMicrosoft;
-    private double investmentInQualcomm;
-    private double investmentInSP500;
+    private int sharesInAmazon;
+    private int sharesInApple;
+    private int sharesInBroadcom;
+    private int sharesInGoogle;
+    private int sharesInMeta;
+    private int sharesInMicrosoft;
+    private int sharesInQualcomm;
 
     // Private constructor to prevent instantiation
     private User() {
         // Initialize attributes
         totalCash = 10000.0; // Example initial cash amount
-        investmentInAmazon = 0.0;
-        investmentInApple = 0.0;
-        investmentInBroadcom = 0.0;
-        investmentInGoogle = 0.0;
-        investmentInMeta = 0.0;
-        investmentInMicrosoft = 0.0;
-        investmentInQualcomm = 0.0;
-        investmentInSP500 = 0.0;
+        sharesInAmazon = 0;
+        sharesInApple = 0;
+        sharesInBroadcom = 0;
+        sharesInGoogle = 0;
+        sharesInMeta = 0;
+        sharesInMicrosoft = 0;
+        sharesInQualcomm = 0;
     }
 
     // Method to get the singleton instance
@@ -58,67 +56,59 @@ public class User {
         this.totalCash = totalCash;
     }
 
-    public double getInvestmentInAmazon() {
-        return investmentInAmazon;
+    public int getSharesInAmazon() {
+        return sharesInAmazon;
     }
 
-    public void setInvestmentInAmazon(double investmentInAmazon) {
-        this.investmentInAmazon = investmentInAmazon;
+    public void setSharesInAmazon(int sharesInAmazon) {
+        this.sharesInAmazon = sharesInAmazon;
     }
 
-    public double getInvestmentInApple() {
-        return investmentInApple;
+    public int getSharesInApple() {
+        return sharesInApple;
     }
 
-    public void setInvestmentInApple(double investmentInApple) {
-        this.investmentInApple = investmentInApple;
+    public void setSharesInApple(int sharesInApple) {
+        this.sharesInApple = sharesInApple;
     }
 
-    public double getInvestmentInBroadcom() {
-        return investmentInBroadcom;
+    public int getSharesInBroadcom() {
+        return sharesInBroadcom;
     }
 
-    public void setInvestmentInBroadcom(double investmentInBroadcom) {
-        this.investmentInBroadcom = investmentInBroadcom;
+    public void setSharesInBroadcom(int sharesInBroadcom) {
+        this.sharesInBroadcom = sharesInBroadcom;
     }
 
-    public double getInvestmentInGoogle() {
-        return investmentInGoogle;
+    public int getSharesInGoogle() {
+        return sharesInGoogle;
     }
 
-    public void setInvestmentInGoogle(double investmentInGoogle) {
-        this.investmentInGoogle = investmentInGoogle;
+    public void setSharesInGoogle(int sharesInGoogle) {
+        this.sharesInGoogle = sharesInGoogle;
+    }
+    
+    public int getSharesInMeta() {
+        return sharesInMeta;
     }
 
-    public double getInvestmentInMeta() {
-        return investmentInMeta;
+    public void setSharesInMeta(int sharesInMeta) {
+        this.sharesInMeta = sharesInMeta;
+    }
+    
+    public int getSharesInMicrosoft() {
+        return sharesInMicrosoft;
     }
 
-    public void setInvestmentInMeta(double investmentInMeta) {
-        this.investmentInMeta = investmentInMeta;
+    public void setSharesInMicrosoft(int sharesInMicrosoft) {
+        this.sharesInMicrosoft = sharesInMicrosoft;
     }
 
-    public double getInvestmentInMicrosoft() {
-        return investmentInMicrosoft;
+    public int getSharesInQualcomm() {
+        return sharesInQualcomm;
     }
 
-    public void setInvestmentInMicrosoft(double investmentInMicrosoft) {
-        this.investmentInMicrosoft = investmentInMicrosoft;
-    }
-
-    public double getInvestmentInQualcomm() {
-        return investmentInQualcomm;
-    }
-
-    public void setInvestmentInQualcomm(double investmentInQualcomm) {
-        this.investmentInQualcomm = investmentInQualcomm;
-    }
-
-    public double getInvestmentInSP500() {
-        return investmentInSP500;
-    }
-
-    public void setInvestmentInSP500(double investmentInSP500) {
-        this.investmentInSP500 = investmentInSP500;
+    public void setSharesInQualcomm(int sharesInQualcomm) {
+        this.sharesInQualcomm = sharesInQualcomm;
     }
 }
