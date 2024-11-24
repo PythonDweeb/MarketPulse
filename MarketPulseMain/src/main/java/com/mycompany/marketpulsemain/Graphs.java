@@ -14,101 +14,126 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import java.awt.Color;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 
 public class Graphs extends javax.swing.JFrame {
 
     private Data data;
-
+    private XYSeriesCollection dataset;
+    
     public Graphs() {
         initComponents();
 
         // Get the singleton instance of Data
         data = Data.getInstance();
 
-        // Create and display charts
-        createCharts();
+        dataset = new XYSeriesCollection();
+
+    // Create and display the multi-line chart
+        createMultiLineChart();
     }
 
 
-    private void createCharts() {
-        createChartForCompany("Amazon", data.getDates(), data.getAmazonCloseArray(), amazonChartPanel);
-        createChartForCompany("Apple", data.getDates(), data.getAppleCloseArray(), appleChartPanel);
-        createChartForCompany("Broadcom", data.getDates(), data.getBroadcomCloseArray(), broadcomChartPanel);
-        createChartForCompany("Google", data.getDates(), data.getGoogleCloseArray(), googleChartPanel);
-        createChartForCompany("Meta", data.getDates(), data.getMetaCloseArray(), metaChartPanel);
-        createChartForCompany("Microsoft", data.getDates(), data.getMicrosoftCloseArray(), microsoftChartPanel);
-        createChartForCompany("Qualcomm", data.getDates(), data.getQualcommCloseArray(), qualcommChartPanel);
-    }
-    
-    private void createChartForCompany(String companyName, String[] dates, double[] prices, javax.swing.JPanel panel) {
-        // Create a dataset up to the current day
+    private void addSeriesToDataset(String companyName, String[] dates, double[] prices) {
         XYSeries series = new XYSeries(companyName);
 
-        for (int i = 0; i <= data.getDay(); i++) {
-            series.add(i + 1, prices[i]); // Days start at 1
+        int currentDay = data.getDay();
+
+        for (int i = 0; i <= currentDay && i < prices.length; i++) {
+            series.add(i, prices[i]); // Days start at 1
         }
 
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
+        dataset.addSeries(series);
+    }
+
+    
+    
+    private void createMultiLineChart() {
+        // Clear existing dataset
+        dataset.removeAllSeries();
+
+        // Add series for each company
+        addSeriesToDataset("Amazon", data.getDates(), data.getAmazonCloseArray());
+        addSeriesToDataset("Apple", data.getDates(), data.getAppleCloseArray());
+        addSeriesToDataset("Broadcom", data.getDates(), data.getBroadcomCloseArray());
+        addSeriesToDataset("Google", data.getDates(), data.getGoogleCloseArray());
+        addSeriesToDataset("Meta", data.getDates(), data.getMetaCloseArray());
+        addSeriesToDataset("Microsoft", data.getDates(), data.getMicrosoftCloseArray());
+        addSeriesToDataset("Qualcomm", data.getDates(), data.getQualcommCloseArray());
 
         // Create the chart
         JFreeChart chart = ChartFactory.createXYLineChart(
-                companyName + " Stock Prices",
-                "Day",
-                "Price",
-                dataset,
-                org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
+                "Stock Prices Over Time",      // Chart title
+                "Day",                         // X-Axis Label
+                "Price ($)",                   // Y-Axis Label
+                dataset
         );
 
-        // Customize the chart
-        customizeChart(chart,companyName);
+        // Customize the plot
+        customizeChart(chart);
 
-        // Remove any existing content in the panel
-        panel.removeAll();
+        // Create and set the ChartPanel
+        ChartPanel cp = new ChartPanel(chart);
+        cp.setPreferredSize(new java.awt.Dimension(800, 600)); // Set desired size
+        cp.setLayout(new BorderLayout());
 
-        // Create a ChartPanel with fixed size
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(240, 160)); // Fixed size
-        chartPanel.setMinimumSize(new java.awt.Dimension(240, 160));
-        chartPanel.setMaximumSize(new java.awt.Dimension(240, 160));
-        chartPanel.setSize(new java.awt.Dimension(240, 160));
+        // Remove any existing content in chartPanel
+        chartPanel.removeAll();
 
-        // Add the ChartPanel to the JPanel
-        panel.setLayout(new BorderLayout());
-        panel.add(chartPanel, BorderLayout.CENTER);
+        // Add ChartPanel to chartPanel
+        chartPanel.setLayout(new BorderLayout());
+        chartPanel.add(cp, BorderLayout.CENTER);
 
         // Refresh the panel
-        panel.validate();
-        panel.repaint();
+        chartPanel.validate();
+        chartPanel.repaint();
+    }
+    
+        private Color getColor(int index) {
+        Color[] colors = new Color[] {
+            Color.BLUE, Color.RED, Color.GREEN, Color.MAGENTA,
+            Color.ORANGE, Color.CYAN, Color.PINK, Color.DARK_GRAY
+        };
+
+        return colors[index % colors.length];
     }
 
-    private void customizeChart(JFreeChart chart, String companyName) {
+    private void customizeChart(JFreeChart chart) {
         XYPlot plot = chart.getXYPlot();
 
         // Set fixed range for the x-axis (Day 1 to Day 23)
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        domain.setRange(0.0, 23.0);
+        domain.setRange(0.0, 22.0);
         domain.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(1));
+        domain.setVerticalTickLabels(false); // Optional: Rotate labels for better readability
 
         // Set fixed range for the y-axis based on expected stock prices
-        if (companyName.equals("Meta")) {
-            NumberAxis range = (NumberAxis) plot.getRangeAxis();
-            range.setRange(500.0, 600.0); // Adjust based on your data
-            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
-        } else if (companyName.equals("Microsoft")) {
-            NumberAxis range = (NumberAxis) plot.getRangeAxis();
-            range.setRange(400.0, 500.0); // Adjust based on your data
-            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
-        } else {
-            NumberAxis range = (NumberAxis) plot.getRangeAxis();
-            range.setRange(150.0, 250.0); // Adjust based on your data
-            range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10));
+        // Adjust these values based on your data
+        NumberAxis range = (NumberAxis) plot.getRangeAxis();
+        range.setRange(0.0, 600.0); // 10% above the max price
+        range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(20)); // Adjust as needed
+
+        // Customize the renderer for better visuals
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+        // Set distinct colors and strokes for each series
+        for (int i = 0; i < dataset.getSeriesCount(); i++) {
+            renderer.setSeriesPaint(i, getColor(i));
+            renderer.setSeriesStroke(i, new BasicStroke(2.0f));
+            renderer.setSeriesShapesVisible(i, false); // Hide data points
         }
+
+        plot.setRenderer(renderer);
+
+        // Optional: Customize background
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
     }
 
 
@@ -128,13 +153,7 @@ public class Graphs extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         Title = new javax.swing.JLabel();
-        appleChartPanel = new javax.swing.JPanel();
-        amazonChartPanel = new javax.swing.JPanel();
-        broadcomChartPanel = new javax.swing.JPanel();
-        googleChartPanel = new javax.swing.JPanel();
-        metaChartPanel = new javax.swing.JPanel();
-        microsoftChartPanel = new javax.swing.JPanel();
-        qualcommChartPanel = new javax.swing.JPanel();
+        chartPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,81 +194,15 @@ public class Graphs extends javax.swing.JFrame {
 
         Title.setText("Graphs");
 
-        javax.swing.GroupLayout appleChartPanelLayout = new javax.swing.GroupLayout(appleChartPanel);
-        appleChartPanel.setLayout(appleChartPanelLayout);
-        appleChartPanelLayout.setHorizontalGroup(
-            appleChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
+        javax.swing.GroupLayout chartPanelLayout = new javax.swing.GroupLayout(chartPanel);
+        chartPanel.setLayout(chartPanelLayout);
+        chartPanelLayout.setHorizontalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
-        appleChartPanelLayout.setVerticalGroup(
-            appleChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout amazonChartPanelLayout = new javax.swing.GroupLayout(amazonChartPanel);
-        amazonChartPanel.setLayout(amazonChartPanelLayout);
-        amazonChartPanelLayout.setHorizontalGroup(
-            amazonChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
-        );
-        amazonChartPanelLayout.setVerticalGroup(
-            amazonChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout broadcomChartPanelLayout = new javax.swing.GroupLayout(broadcomChartPanel);
-        broadcomChartPanel.setLayout(broadcomChartPanelLayout);
-        broadcomChartPanelLayout.setHorizontalGroup(
-            broadcomChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
-        );
-        broadcomChartPanelLayout.setVerticalGroup(
-            broadcomChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout googleChartPanelLayout = new javax.swing.GroupLayout(googleChartPanel);
-        googleChartPanel.setLayout(googleChartPanelLayout);
-        googleChartPanelLayout.setHorizontalGroup(
-            googleChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
-        );
-        googleChartPanelLayout.setVerticalGroup(
-            googleChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout metaChartPanelLayout = new javax.swing.GroupLayout(metaChartPanel);
-        metaChartPanel.setLayout(metaChartPanelLayout);
-        metaChartPanelLayout.setHorizontalGroup(
-            metaChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
-        );
-        metaChartPanelLayout.setVerticalGroup(
-            metaChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout microsoftChartPanelLayout = new javax.swing.GroupLayout(microsoftChartPanel);
-        microsoftChartPanel.setLayout(microsoftChartPanelLayout);
-        microsoftChartPanelLayout.setHorizontalGroup(
-            microsoftChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 157, Short.MAX_VALUE)
-        );
-        microsoftChartPanelLayout.setVerticalGroup(
-            microsoftChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout qualcommChartPanelLayout = new javax.swing.GroupLayout(qualcommChartPanel);
-        qualcommChartPanel.setLayout(qualcommChartPanelLayout);
-        qualcommChartPanelLayout.setHorizontalGroup(
-            qualcommChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 145, Short.MAX_VALUE)
-        );
-        qualcommChartPanelLayout.setVerticalGroup(
-            qualcommChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 131, Short.MAX_VALUE)
+        chartPanelLayout.setVerticalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -268,56 +221,33 @@ public class Graphs extends javax.swing.JFrame {
                         .addGap(78, 78, 78)
                         .addComponent(Title))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(appleChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(amazonChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(broadcomChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(googleChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(qualcommChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(metaChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(microsoftChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addGap(0, 416, Short.MAX_VALUE))
+                        .addGap(100, 100, 100)
+                        .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 793, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(appleChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(amazonChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(broadcomChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(googleChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(metaChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(microsoftChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(qualcommChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(539, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
@@ -390,17 +320,11 @@ public class Graphs extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Title;
-    private javax.swing.JPanel amazonChartPanel;
-    private javax.swing.JPanel appleChartPanel;
-    private javax.swing.JPanel broadcomChartPanel;
-    private javax.swing.JPanel googleChartPanel;
+    private javax.swing.JPanel chartPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JPanel metaChartPanel;
-    private javax.swing.JPanel microsoftChartPanel;
-    private javax.swing.JPanel qualcommChartPanel;
     // End of variables declaration//GEN-END:variables
 }
