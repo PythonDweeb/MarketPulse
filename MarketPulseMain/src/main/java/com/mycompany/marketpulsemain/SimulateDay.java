@@ -13,8 +13,16 @@ public class SimulateDay extends javax.swing.JFrame {
     /**
      * Creates new form SimulateDay
      */
+    private Data data;
+    private User user;
+    
     public SimulateDay() {
         initComponents();
+        data = Data.getInstance();
+        user = User.getInstance();
+
+        // Display the current date
+        Date.setText(data.getCurrentDate());
     }
 
     /**
@@ -140,7 +148,9 @@ public class SimulateDay extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SimulateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimulateActionPerformed
-        // TODO add your handling code here:
+        data.incrementDay();
+        Date.setText(data.getCurrentDate());
+//        System.out.printf("Amazon Close: %f",data.getAmazonClose());
     }//GEN-LAST:event_SimulateActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
