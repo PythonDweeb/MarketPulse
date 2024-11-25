@@ -9,14 +9,56 @@ package com.mycompany.marketpulsemain;
  * @author kraj200
  */
 public class BuySell extends javax.swing.JFrame {
-
+    private Data data;
+    private User user;
     /**
      * Creates new form BuySell
      */
     public BuySell() {
         initComponents();
+        data = Data.getInstance();
+        user = User.getInstance();
+        setup();
     }
 
+    private String formatStockValue(double current, double previous) {
+        double difference = current - previous;
+        if (difference > 0) {
+            return String.format("$%.2f (+%.2f)", current, difference);
+        } else {
+            return String.format("$%.2f (%.2f)", current, difference);
+        }
+    }
+    
+    private void setup() {
+        if (data.getDay() == 0) {
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            currentAmazonValue.setText(String.format("$%.2f", data.getAmazonClose()));
+            currentAppleValue.setText(String.format("$%.2f", data.getAppleClose()));
+            currentBroadcomValue.setText(String.format("$%.2f", data.getBroadcomClose()));
+            currentGoogleValue.setText(String.format("$%.2f", data.getGoogleClose()));
+            currentMetaValue.setText(String.format("$%.2f", data.getMetaClose()));
+            currentMicrosoftValue.setText(String.format("$%.2f", data.getMicrosoftClose()));
+            currentQualcommValue.setText(String.format("$%.2f", data.getQualcommClose()));
+        } else {
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            currentAmazonValue.setText(formatStockValue(data.getAmazonClose(), data.getAmazonCloseArray()[data.getDay() - 1]));
+            currentAppleValue.setText(formatStockValue(data.getAppleClose(), data.getAppleCloseArray()[data.getDay() - 1]));
+            currentBroadcomValue.setText(formatStockValue(data.getBroadcomClose(), data.getBroadcomCloseArray()[data.getDay() - 1]));
+            currentGoogleValue.setText(formatStockValue(data.getGoogleClose(), data.getGoogleCloseArray()[data.getDay() - 1]));
+            currentMetaValue.setText(formatStockValue(data.getMetaClose(), data.getMetaCloseArray()[data.getDay() - 1]));
+            currentMicrosoftValue.setText(formatStockValue(data.getMicrosoftClose(), data.getMicrosoftCloseArray()[data.getDay() - 1]));
+            currentQualcommValue.setText(formatStockValue(data.getQualcommClose(), data.getQualcommCloseArray()[data.getDay() - 1]));
+        }
+        
+        applesharesowned.setText(String.format("%d",user.getSharesInApple()));
+        amazonsharesowned.setText(String.format("%d",user.getSharesInAmazon()));
+        broadcomsharesowned.setText(String.format("%d",user.getSharesInBroadcom()));
+        googlesharesowned.setText(String.format("%d",user.getSharesInGoogle()));
+        metasharesowned.setText(String.format("%d",user.getSharesInMeta()));
+        microsoftsharesowned.setText(String.format("%d",user.getSharesInMicrosoft()));
+        qualcommsharesowned.setText(String.format("%d",user.getSharesInQualcomm()));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -131,6 +173,8 @@ public class BuySell extends javax.swing.JFrame {
 
         Title.setText("Buy and Sell stocks");
 
+        jPanel9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel1.setText("Amazon");
 
         jLabel2.setText("Shares Owned:");
@@ -145,6 +189,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyAmazon.setText("Buy");
+        BuyAmazon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyAmazonActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Current Value:");
 
@@ -194,6 +243,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel3.setText("Apple");
 
         jLabel6.setText("Shares Owned:");
@@ -208,6 +259,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyApple.setText("Buy");
+        BuyApple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyAppleActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Current Value:");
 
@@ -257,6 +313,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
+        jPanel11.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel5.setText("Broadcom");
 
         jLabel8.setText("Shares Owned:");
@@ -271,6 +329,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyBroadcom.setText("Buy");
+        BuyBroadcom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyBroadcomActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Current Value:");
 
@@ -320,6 +383,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
+        jPanel12.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel10.setText("Google");
 
         jLabel11.setText("Shares Owned:");
@@ -334,6 +399,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyGoogle.setText("Buy");
+        BuyGoogle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyGoogleActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Current Value:");
 
@@ -383,6 +453,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
+        jPanel13.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel13.setText("Meta");
 
         jLabel14.setText("Shares Owned:");
@@ -397,6 +469,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyMeta.setText("Buy");
+        BuyMeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyMetaActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("Current Value:");
 
@@ -446,6 +523,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
+        jPanel14.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel16.setText("Microsoft");
 
         jLabel17.setText("Shares Owned:");
@@ -460,6 +539,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyMicrosoft.setText("Buy");
+        BuyMicrosoft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyMicrosoftActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Current Value:");
 
@@ -509,6 +593,8 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
+        jPanel15.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel19.setText("Qualcomm");
 
         jLabel20.setText("Shares Owned:");
@@ -523,6 +609,11 @@ public class BuySell extends javax.swing.JFrame {
         });
 
         BuyQualcomm.setText("Buy");
+        BuyQualcomm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuyQualcommActionPerformed(evt);
+            }
+        });
 
         jLabel21.setText("Current Value:");
 
@@ -572,20 +663,22 @@ public class BuySell extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
+        jPanel16.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel23.setText("Able to invest:");
 
-        currentCashValue.setText("0");
+        currentCashValue.setText("$xxxx.xx");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel23)
-                .addGap(29, 29, 29)
+                .addGap(37, 37, 37)
                 .addComponent(currentCashValue)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -614,25 +707,28 @@ public class BuySell extends javax.swing.JFrame {
                         .addComponent(Title)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(128, 128, 128))))
+                        .addGap(160, 160, 160))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -669,7 +765,7 @@ public class BuySell extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -706,32 +802,130 @@ public class BuySell extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void SellAmazonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellAmazonActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInAmazon() > 0) {
+            user.setSharesInAmazon((user.getSharesInAmazon())-1);
+            user.setTotalCash(user.getTotalCash() + data.getAmazonClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            amazonsharesowned.setText(String.format("%d",user.getSharesInAmazon()));
+        }
     }//GEN-LAST:event_SellAmazonActionPerformed
 
     private void SellAppleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellAppleActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInApple() > 0) {
+            user.setSharesInApple((user.getSharesInApple())-1);
+            user.setTotalCash(user.getTotalCash() + data.getAppleClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            applesharesowned.setText(String.format("%d",user.getSharesInApple()));
+        }
     }//GEN-LAST:event_SellAppleActionPerformed
 
     private void SellBroadcomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellBroadcomActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInBroadcom() > 0) {
+            user.setSharesInBroadcom((user.getSharesInBroadcom())-1);
+            user.setTotalCash(user.getTotalCash() + data.getBroadcomClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            broadcomsharesowned.setText(String.format("%d",user.getSharesInBroadcom()));
+        }
     }//GEN-LAST:event_SellBroadcomActionPerformed
 
     private void SellGoogleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellGoogleActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInGoogle() > 0) {
+            user.setSharesInGoogle((user.getSharesInGoogle())-1);
+            user.setTotalCash(user.getTotalCash() + data.getGoogleClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            googlesharesowned.setText(String.format("%d",user.getSharesInGoogle()));
+        }
     }//GEN-LAST:event_SellGoogleActionPerformed
 
     private void SellMetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellMetaActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInMeta() > 0) {
+            user.setSharesInMeta((user.getSharesInMeta())-1);
+            user.setTotalCash(user.getTotalCash() + data.getMetaClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            metasharesowned.setText(String.format("%d",user.getSharesInMeta()));
+        }
     }//GEN-LAST:event_SellMetaActionPerformed
 
     private void SellMicrosoftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellMicrosoftActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInMicrosoft() > 0) {
+            user.setSharesInMicrosoft((user.getSharesInMicrosoft())-1);
+            user.setTotalCash(user.getTotalCash() + data.getMicrosoftClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            microsoftsharesowned.setText(String.format("%d",user.getSharesInMicrosoft()));
+        }
     }//GEN-LAST:event_SellMicrosoftActionPerformed
 
     private void SellQualcommActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellQualcommActionPerformed
-        // TODO add your handling code here:
+        if (user.getSharesInQualcomm() > 0) {
+            user.setSharesInQualcomm((user.getSharesInQualcomm())-1);
+            user.setTotalCash(user.getTotalCash() + data.getQualcommClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            qualcommsharesowned.setText(String.format("%d",user.getSharesInQualcomm()));
+        }
     }//GEN-LAST:event_SellQualcommActionPerformed
+
+    private void BuyAppleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyAppleActionPerformed
+        if (user.getTotalCash() - data.getAppleClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getAppleClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInApple((user.getSharesInApple())+1);
+            applesharesowned.setText(String.format("%d",user.getSharesInApple()));
+        }
+    }//GEN-LAST:event_BuyAppleActionPerformed
+
+    private void BuyAmazonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyAmazonActionPerformed
+        if (user.getTotalCash() - data.getAmazonClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getAmazonClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInAmazon((user.getSharesInAmazon())+1);
+            amazonsharesowned.setText(String.format("%d",user.getSharesInAmazon()));
+        }
+    }//GEN-LAST:event_BuyAmazonActionPerformed
+
+    private void BuyBroadcomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyBroadcomActionPerformed
+        if (user.getTotalCash() - data.getBroadcomClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getBroadcomClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInBroadcom((user.getSharesInBroadcom())+1);
+            broadcomsharesowned.setText(String.format("%d",user.getSharesInBroadcom()));
+        }
+    }//GEN-LAST:event_BuyBroadcomActionPerformed
+
+    private void BuyGoogleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyGoogleActionPerformed
+        if (user.getTotalCash() - data.getGoogleClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getGoogleClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInGoogle((user.getSharesInGoogle())+1);
+            googlesharesowned.setText(String.format("%d",user.getSharesInGoogle()));
+        }
+    }//GEN-LAST:event_BuyGoogleActionPerformed
+
+    private void BuyMetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyMetaActionPerformed
+        if (user.getTotalCash() - data.getMetaClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getMetaClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInMeta((user.getSharesInMeta())+1);
+            metasharesowned.setText(String.format("%d",user.getSharesInMeta()));
+        }
+    }//GEN-LAST:event_BuyMetaActionPerformed
+
+    private void BuyMicrosoftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyMicrosoftActionPerformed
+        if (user.getTotalCash() - data.getMicrosoftClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getMicrosoftClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInMicrosoft((user.getSharesInMicrosoft())+1);
+            microsoftsharesowned.setText(String.format("%d",user.getSharesInMicrosoft()));
+        }
+    }//GEN-LAST:event_BuyMicrosoftActionPerformed
+
+    private void BuyQualcommActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyQualcommActionPerformed
+        if (user.getTotalCash() - data.getQualcommClose() >= 0) {
+            user.setTotalCash(user.getTotalCash() - data.getQualcommClose());
+            currentCashValue.setText(String.format("$%.2f",user.getTotalCash()));
+            user.setSharesInQualcomm((user.getSharesInQualcomm())+1);
+            qualcommsharesowned.setText(String.format("%d",user.getSharesInQualcomm()));
+        }
+    }//GEN-LAST:event_BuyQualcommActionPerformed
 
     /**
      * @param args the command line arguments
