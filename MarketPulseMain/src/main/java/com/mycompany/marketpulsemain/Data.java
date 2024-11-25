@@ -25,6 +25,8 @@ public class Data {
     private boolean datesLoaded = false;
 
     private int day = 0;
+    
+    private int[] visited = new int[DATA_SIZE];
 
     private double[] amazonClose = new double[DATA_SIZE];
     private long[] amazonVolume = new long[DATA_SIZE];
@@ -70,6 +72,9 @@ public class Data {
             // Using relative paths to access resources
             String resourcePath = "/resources/" + company + "MonthData.csv";
             readCsvData(resourcePath, company);
+        }
+        for (int i = 0; i < DATA_SIZE; i++) {
+            visited[i] = 0;
         }
     }
     
@@ -184,6 +189,10 @@ public class Data {
     public double getAmazonClose() {
         return amazonClose[day];
     }
+    
+    public double getAmazonCloseYesterday() {
+        return amazonClose[day-1];
+    }
 
     public long getAmazonVolume() {
         return amazonVolume[day];
@@ -191,6 +200,10 @@ public class Data {
 
     public double getAppleClose() {
         return appleClose[day];
+    }
+    
+    public double getAppleCloseYesterday() {
+        return appleClose[day-1];
     }
 
     public long getAppleVolume() {
@@ -200,6 +213,10 @@ public class Data {
     public double getBroadcomClose() {
         return broadcomClose[day];
     }
+    
+    public double getBroadcomCloseYesterday() {
+        return broadcomClose[day-1];
+    }
 
     public long getBroadcomVolume() {
         return broadcomVolume[day];
@@ -207,6 +224,10 @@ public class Data {
 
     public double getGoogleClose() {
         return googleClose[day];
+    }
+    
+    public double getGoogleCloseYesterday() {
+        return googleClose[day-1];
     }
 
     public long getGoogleVolume() {
@@ -216,6 +237,10 @@ public class Data {
     public double getMetaClose() {
         return metaClose[day];
     }
+    
+    public double getMetaCloseYesterday() {
+        return metaClose[day-1];
+    }
 
     public long getMetaVolume() {
         return metaVolume[day];
@@ -224,6 +249,10 @@ public class Data {
     public double getMicrosoftClose() {
         return microsoftClose[day];
     }
+    
+    public double getMicrosoftCloseYesterday() {
+        return microsoftClose[day-1];
+    }
 
     public long getMicrosoftVolume() {
         return microsoftVolume[day];
@@ -231,6 +260,10 @@ public class Data {
 
     public double getQualcommClose() {
         return qualcommClose[day];
+    }
+    
+    public double getQualcommCloseYesterday() {
+        return qualcommClose[day-1];
     }
 
     public long getQualcommVolume() {
@@ -269,5 +302,13 @@ public class Data {
     
     public double[] getQualcommCloseArray() {
         return qualcommClose;
+    }
+    
+    public int getVisited() {
+        return visited[day];
+    }
+    
+    public void setVisitedTrue() {
+        visited[day] = 1;
     }
 }

@@ -13,8 +13,80 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form Dashboard
      */
+    private Data data;
+    private User user;
+    
     public Dashboard() {
         initComponents();
+        data = Data.getInstance();
+        user = User.getInstance();
+//        if (data.getVisited() == 0) {
+        setup();
+        data.setVisitedTrue();
+//        }
+    }
+    
+    private String formatContributionValue(double current, double difference) {
+        if (current > 0) {
+            return String.format("+%.2f%% (+$%.2f$)", current*100, difference);
+        } else {
+            return String.format("%.2f%% (-$%.2f$)", current, (0-difference));
+        }
+    }
+    
+    private String formatInvestmentValue(double change, double old, double curr) {
+        if (change >= 0) {
+            return String.format("%.2f (+%.2f%%)", curr, 100*change/old);
+        } else {
+            return String.format("%.2f%% (-$%.2f$)", curr, (0-100*change/old));
+        }
+    }
+    
+    private void setup() {
+        totalcash.setText(String.format("$%.2f",user.getTotalCash()));
+        double appleval = user.getSharesInApple() * data.getAppleClose();
+        double amazonval = user.getSharesInAmazon() * data.getAmazonClose(); 
+        double broadcomval = user.getSharesInBroadcom() * data.getBroadcomClose();
+        double googleval = user.getSharesInGoogle() * data.getGoogleClose();
+        double metaval = user.getSharesInMeta() * data.getMetaClose();
+        double microsoftval = user.getSharesInMicrosoft() * data.getMicrosoftClose();
+        double qualcommval = user.getSharesInQualcomm() * data.getQualcommClose();
+        double applechange = 0;
+        double amazonchange = 0;
+        double broadcomchange = 0;
+        double googlechange = 0;
+        double metachange = 0;
+        double microsoftchange = 0;
+        double qualcommchange = 0;
+        double totalchange = 0;
+        investmentvalue.setText(formatInvestmentValue(totalchange,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
+        amazoncontribution.setText(formatContributionValue(0, amazonchange));
+        applecontribution.setText(formatContributionValue(0, applechange));
+        broadcomcontribution.setText(formatContributionValue(0, broadcomchange));
+        googlecontribution.setText(formatContributionValue(0, googlechange));
+        metacontribution.setText(formatContributionValue(0, metachange));
+        microsoftcontribution.setText(formatContributionValue(0, microsoftchange));
+        qualcommcontribution.setText(formatContributionValue(0, qualcommchange));
+        if (data.getDay() > 0) {
+            applechange = user.getSharesInApple() * (data.getAppleClose() - data.getAmazonCloseYesterday());
+            amazonchange = user.getSharesInAmazon() * (data.getAmazonClose() - data.getAppleCloseYesterday()); 
+            broadcomchange = user.getSharesInBroadcom() * (data.getBroadcomClose()-data.getBroadcomCloseYesterday());
+            googlechange = user.getSharesInGoogle() * (data.getGoogleClose()-data.getGoogleCloseYesterday());
+            metachange = user.getSharesInMeta() * (data.getMetaClose()-data.getMetaCloseYesterday());
+            microsoftchange = user.getSharesInMicrosoft() * (data.getMicrosoftClose()-data.getMicrosoftCloseYesterday());
+            qualcommchange = user.getSharesInQualcomm() * (data.getQualcommClose()-data.getQualcommCloseYesterday());
+            totalchange = applechange + amazonchange + broadcomchange + googlechange + metachange + microsoftchange + qualcommchange;
+            investmentvalue.setText(formatInvestmentValue(totalchange,user.getSharesInApple() * data.getAmazonCloseYesterday() + user.getSharesInAmazon() * data.getAppleCloseYesterday()
+        +user.getSharesInBroadcom() * data.getBroadcomCloseYesterday() + user.getSharesInGoogle() * data.getGoogleCloseYesterday() + user.getSharesInMicrosoft() * data.getMicrosoftCloseYesterday()
+        +user.getSharesInMeta() * data.getMetaCloseYesterday() + user.getSharesInQualcomm() * data.getQualcommCloseYesterday(),appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
+            amazoncontribution.setText(formatContributionValue(((data.getAmazonClose() - data.getAmazonCloseYesterday())/data.getAmazonCloseYesterday()), amazonchange));
+            applecontribution.setText(formatContributionValue(((data.getAppleClose() - data.getAppleCloseYesterday())/data.getAppleCloseYesterday()), applechange));
+            broadcomcontribution.setText(formatContributionValue(((data.getBroadcomClose() - data.getBroadcomCloseYesterday())/data.getBroadcomCloseYesterday()), broadcomchange));
+            googlecontribution.setText(formatContributionValue(((data.getGoogleClose() - data.getGoogleCloseYesterday())/data.getGoogleCloseYesterday()), googlechange));
+            metacontribution.setText(formatContributionValue(((data.getMetaClose() - data.getMetaCloseYesterday())/data.getMetaCloseYesterday()), metachange));
+            microsoftcontribution.setText(formatContributionValue(((data.getMicrosoftClose() - data.getMicrosoftCloseYesterday())/data.getMicrosoftCloseYesterday()), microsoftchange));
+            qualcommcontribution.setText(formatContributionValue(((data.getQualcommClose() - data.getQualcommCloseYesterday())/data.getQualcommCloseYesterday()), qualcommchange));
+        }
     }
 
     /**
