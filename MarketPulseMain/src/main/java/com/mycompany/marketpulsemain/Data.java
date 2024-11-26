@@ -197,6 +197,10 @@ public class Data {
     public long getAmazonVolume() {
         return amazonVolume[day];
     }
+    
+    public long[] getAmazonVolumeArray() {
+        return amazonVolume;
+    }
 
     public double getAppleClose() {
         return appleClose[day];
@@ -208,6 +212,10 @@ public class Data {
 
     public long getAppleVolume() {
         return appleVolume[day];
+    }
+    
+    public long[] getAppleVolumeArray() {
+        return appleVolume;
     }
 
     public double getBroadcomClose() {
@@ -222,6 +230,10 @@ public class Data {
         return broadcomVolume[day];
     }
 
+    public long[] getBroadcomVolumeArray() {
+        return broadcomVolume;
+    }
+    
     public double getGoogleClose() {
         return googleClose[day];
     }
@@ -234,6 +246,10 @@ public class Data {
         return googleVolume[day];
     }
 
+    public long[] getGoogleVolumeArray() {
+        return googleVolume;
+    }
+    
     public double getMetaClose() {
         return metaClose[day];
     }
@@ -244,6 +260,10 @@ public class Data {
 
     public long getMetaVolume() {
         return metaVolume[day];
+    }
+    
+    public long[] getMetaVolumeArray() {
+        return metaVolume;
     }
 
     public double getMicrosoftClose() {
@@ -257,6 +277,10 @@ public class Data {
     public long getMicrosoftVolume() {
         return microsoftVolume[day];
     }
+    
+    public long[] getMicrosoftVolumeArray() {
+        return microsoftVolume;
+    }
 
     public double getQualcommClose() {
         return qualcommClose[day];
@@ -268,6 +292,10 @@ public class Data {
 
     public long getQualcommVolume() {
         return qualcommVolume[day];
+    }
+    
+    public long[] getQualcommVolumeArray() {
+        return qualcommVolume;
     }
     
     // add getters for other arrays if full are needed in future

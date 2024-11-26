@@ -52,6 +52,35 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
     
+    private String getVolumeMagnitude(long vol, long vollist[]) {
+        long avg = 0;
+        long low = 0;
+        long high = 0;
+        for (int i = 0; i < 23; i++) {
+            if (i == 0) {
+                low = vollist[i];
+                high = vollist[i];
+            } else {
+                if (vollist[i] < low) {
+                    low = vollist[i];
+                }
+                if (vollist[i] > high) {
+                    high = vollist[i];
+                }
+            }
+            
+            avg += vollist[i];
+        }
+        avg /= 23;
+        if (low <= vol && vol <= avg && (vol-low <= avg - vol)) {
+            return String.format("Low");
+        } else if (high >= vol && vol >= avg && (high-vol <= vol-avg)) {
+            return String.format("High");
+        } else {
+            return String.format("Medium");
+        }
+    }
+    
     private void setup() {
         totalcash.setText(String.format("$%.2f",user.getTotalCash()));
         double appleval = user.getSharesInApple() * data.getAppleClose();
@@ -69,6 +98,13 @@ public class Dashboard extends javax.swing.JFrame {
         double microsoftchange = 0;
         double qualcommchange = 0;
         double totalchange = 0;
+        applevolume.setText(getVolumeMagnitude(data.getAppleVolume(),data.getAppleVolumeArray()));
+        amazonvolume.setText(getVolumeMagnitude(data.getAmazonVolume(),data.getAmazonVolumeArray()));
+        broadcomvolume.setText(getVolumeMagnitude(data.getBroadcomVolume(),data.getBroadcomVolumeArray()));
+        googlevolume.setText(getVolumeMagnitude(data.getGoogleVolume(),data.getGoogleVolumeArray()));
+        metavolume.setText(getVolumeMagnitude(data.getMetaVolume(),data.getMetaVolumeArray()));
+        microsoftvolume.setText(getVolumeMagnitude(data.getMicrosoftVolume(),data.getMicrosoftVolumeArray()));
+        qualcommvolume.setText(getVolumeMagnitude(data.getQualcommVolume(),data.getQualcommVolumeArray()));
         investmentvalue.setText(formatInvestmentValue(totalchange,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
         amazoncontribution.setText(formatContributionValue(0, amazonchange));
         applecontribution.setText(formatContributionValue(0, applechange));
