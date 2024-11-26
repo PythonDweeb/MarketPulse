@@ -15,7 +15,6 @@ public class User {
     // Singleton instance
     private static User instance = null;
 
-    // User attributes
     private double totalCash;
     private int sharesInAmazon;
     private int sharesInApple;
@@ -25,10 +24,8 @@ public class User {
     private int sharesInMicrosoft;
     private int sharesInQualcomm;
 
-    // Private constructor to prevent instantiation
     private User() {
-        // Initialize attributes
-        totalCash = 10000.0; // Example initial cash amount
+        totalCash = 10000.0;
         sharesInAmazon = 0;
         sharesInApple = 0;
         sharesInBroadcom = 0;
@@ -46,7 +43,6 @@ public class User {
         return instance;
     }
 
-    // Getter and Setter methods
 
     public double getTotalCash() {
         return totalCash;

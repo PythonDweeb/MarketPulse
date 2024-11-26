@@ -102,24 +102,19 @@ public class Data {
                     break;
                 }
 
-                // Split CSV line, accounting for commas inside quotes
                 String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 
-                // Extract Date, Close, and Volume, cleaning up quotation marks and commas
                 String date = values[0];
                 String closeStr = values[4].replace("\"", "");
                 String volumeStr = values[5].replace("\"", "").replace(",", "");
 
-                // Add date to dates array if not already added
                 if (!datesLoaded) {
                     dates[index] = date;
                 }
 
-                // Parse Close and Volume values
                 double close = Double.parseDouble(closeStr);
                 long volume = Long.parseLong(volumeStr);
-
-                // Store data based on the company
+                
                 switch (company) {
                     case "Amazon":
                         amazonClose[index] = close;
@@ -154,19 +149,17 @@ public class Data {
                 }
             }
 
-            // Close the BufferedReader
             br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // After the first company's data is loaded, mark dates as loaded
         if (!datesLoaded) {
             datesLoaded = true;
         }
     }
-    // Method to increment the day
+
     public void incrementDay() {
         if (day < DATA_SIZE - 1) {
             day++;
@@ -175,17 +168,17 @@ public class Data {
         }
     }
 
-    // Getter for the current day
+
     public int getDay() {
         return day;
     }
 
-    // Method to get the current date
+
     public String getCurrentDate() {
         return dates[day];
     }
 
-    // Getter methods for the current day's data
+
     public double getAmazonClose() {
         return amazonClose[day];
     }

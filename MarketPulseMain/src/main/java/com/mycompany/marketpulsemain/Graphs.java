@@ -54,10 +54,7 @@ public class Graphs extends javax.swing.JFrame {
     
     
     private void createMultiLineChart() {
-        // Clear existing dataset
         dataset.removeAllSeries();
-
-        // Add series for each company
         addSeriesToDataset("Amazon", data.getDates(), data.getAmazonCloseArray());
         addSeriesToDataset("Apple", data.getDates(), data.getAppleCloseArray());
         addSeriesToDataset("Broadcom", data.getDates(), data.getBroadcomCloseArray());
@@ -66,30 +63,26 @@ public class Graphs extends javax.swing.JFrame {
         addSeriesToDataset("Microsoft", data.getDates(), data.getMicrosoftCloseArray());
         addSeriesToDataset("Qualcomm", data.getDates(), data.getQualcommCloseArray());
 
-        // Create the chart
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Stock Prices Over Time",      // Chart title
-                "Day",                         // X-Axis Label
-                "Price ($)",                   // Y-Axis Label
+                "Stock Prices Over Time",
+                "Day",                     
+                "Price ($)",                  
                 dataset
         );
 
-        // Customize the plot
         customizeChart(chart);
 
-        // Create and set the ChartPanel
         ChartPanel cp = new ChartPanel(chart);
-        cp.setPreferredSize(new java.awt.Dimension(800, 600)); // Set desired size
+        cp.setPreferredSize(new java.awt.Dimension(800, 600));
         cp.setLayout(new BorderLayout());
 
-        // Remove any existing content in chartPanel
+  
         chartPanel.removeAll();
 
-        // Add ChartPanel to chartPanel
+
         chartPanel.setLayout(new BorderLayout());
         chartPanel.add(cp, BorderLayout.CENTER);
 
-        // Refresh the panel
         chartPanel.validate();
         chartPanel.repaint();
     }
@@ -106,31 +99,25 @@ public class Graphs extends javax.swing.JFrame {
     private void customizeChart(JFreeChart chart) {
         XYPlot plot = chart.getXYPlot();
 
-        // Set fixed range for the x-axis (Day 1 to Day 23)
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         domain.setRange(0.0, 22.0);
         domain.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(1));
-        domain.setVerticalTickLabels(false); // Optional: Rotate labels for better readability
+        domain.setVerticalTickLabels(false);
 
-        // Set fixed range for the y-axis based on expected stock prices
-        // Adjust these values based on your data
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
-        range.setRange(0.0, 600.0); // 10% above the max price
-        range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(20)); // Adjust as needed
+        range.setRange(0.0, 600.0);
+        range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(20));
 
-        // Customize the renderer for better visuals
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        // Set distinct colors and strokes for each series
         for (int i = 0; i < dataset.getSeriesCount(); i++) {
             renderer.setSeriesPaint(i, getColor(i));
             renderer.setSeriesStroke(i, new BasicStroke(2.0f));
-            renderer.setSeriesShapesVisible(i, false); // Hide data points
+            renderer.setSeriesShapesVisible(i, false);
         }
 
         plot.setRenderer(renderer);
 
-        // Optional: Customize background
         plot.setBackgroundPaint(Color.WHITE);
         plot.setDomainGridlinePaint(Color.GRAY);
         plot.setRangeGridlinePaint(Color.GRAY);
