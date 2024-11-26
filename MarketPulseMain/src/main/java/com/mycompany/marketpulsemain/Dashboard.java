@@ -30,7 +30,7 @@ public class Dashboard extends javax.swing.JFrame {
         if (current >= 0) {
             return String.format("%.2f%% (+$%.2f)", current*100, Math.abs(difference));
         } else {
-            return String.format("%.2f%% (-$%.2f)", current, (0-difference));
+            return String.format("%.2f%% (-$%.2f)", current*100, (0-difference));
         }
     }
     
