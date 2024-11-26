@@ -3,139 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.marketpulsemain;
+import java.util.Random;
 
 /**
  *
  * @author kraj200
  */
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import java.awt.Color;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
+//Hints page humanizes app more
+public class Hints extends javax.swing.JFrame {
 
-public class Graphs extends javax.swing.JFrame {
-
+    /**
+     * Creates new form News_Analysis_Hints
+     */
     private Data data;
-    private XYSeriesCollection dataset;
     
-    public Graphs() {
+    public Hints() {
         initComponents();
-
-        // Get the singleton instance of Data
         data = Data.getInstance();
-
-        dataset = new XYSeriesCollection();
-
-    // Create and display the multi-line chart
-        createMultiLineChart();
     }
-
-
-    private void addSeriesToDataset(String companyName, String[] dates, double[] prices) {
-        XYSeries series = new XYSeries(companyName);
-
-        int currentDay = data.getDay();
-
-        for (int i = 0; i <= currentDay && i < prices.length; i++) {
-            series.add(i, prices[i]); // Days start at 1
-        }
-
-        dataset.addSeries(series);
-    }
-
-    
-    
-    private void createMultiLineChart() {
-        // Clear existing dataset
-        dataset.removeAllSeries();
-
-        // Add series for each company
-        addSeriesToDataset("Amazon", data.getDates(), data.getAmazonCloseArray());
-        addSeriesToDataset("Apple", data.getDates(), data.getAppleCloseArray());
-        addSeriesToDataset("Broadcom", data.getDates(), data.getBroadcomCloseArray());
-        addSeriesToDataset("Google", data.getDates(), data.getGoogleCloseArray());
-        addSeriesToDataset("Meta", data.getDates(), data.getMetaCloseArray());
-        addSeriesToDataset("Microsoft", data.getDates(), data.getMicrosoftCloseArray());
-        addSeriesToDataset("Qualcomm", data.getDates(), data.getQualcommCloseArray());
-
-        // Create the chart
-        JFreeChart chart = ChartFactory.createXYLineChart(
-                "Stock Prices Over Time",      // Chart title
-                "Day",                         // X-Axis Label
-                "Price ($)",                   // Y-Axis Label
-                dataset
-        );
-
-        // Customize the plot
-        customizeChart(chart);
-
-        // Create and set the ChartPanel
-        ChartPanel cp = new ChartPanel(chart);
-        cp.setPreferredSize(new java.awt.Dimension(800, 600)); // Set desired size
-        cp.setLayout(new BorderLayout());
-
-        // Remove any existing content in chartPanel
-        chartPanel.removeAll();
-
-        // Add ChartPanel to chartPanel
-        chartPanel.setLayout(new BorderLayout());
-        chartPanel.add(cp, BorderLayout.CENTER);
-
-        // Refresh the panel
-        chartPanel.validate();
-        chartPanel.repaint();
-    }
-    
-        private Color getColor(int index) {
-        Color[] colors = new Color[] {
-            Color.BLUE, Color.RED, Color.GREEN, Color.MAGENTA,
-            Color.ORANGE, Color.CYAN, Color.PINK, Color.DARK_GRAY
-        };
-
-        return colors[index % colors.length];
-    }
-
-    private void customizeChart(JFreeChart chart) {
-        XYPlot plot = chart.getXYPlot();
-
-        // Set fixed range for the x-axis (Day 1 to Day 23)
-        NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        domain.setRange(0.0, 22.0);
-        domain.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(1));
-        domain.setVerticalTickLabels(false); // Optional: Rotate labels for better readability
-
-        // Set fixed range for the y-axis based on expected stock prices
-        // Adjust these values based on your data
-        NumberAxis range = (NumberAxis) plot.getRangeAxis();
-        range.setRange(0.0, 600.0); // 10% above the max price
-        range.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(20)); // Adjust as needed
-
-        // Customize the renderer for better visuals
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-
-        // Set distinct colors and strokes for each series
-        for (int i = 0; i < dataset.getSeriesCount(); i++) {
-            renderer.setSeriesPaint(i, getColor(i));
-            renderer.setSeriesStroke(i, new BasicStroke(2.0f));
-            renderer.setSeriesShapesVisible(i, false); // Hide data points
-        }
-
-        plot.setRenderer(renderer);
-
-        // Optional: Customize background
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setDomainGridlinePaint(Color.GRAY);
-        plot.setRangeGridlinePaint(Color.GRAY);
-    }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,7 +29,6 @@ public class Graphs extends javax.swing.JFrame {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -153,7 +38,9 @@ public class Graphs extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         Title = new javax.swing.JLabel();
-        chartPanel = new javax.swing.JPanel();
+        shortterm = new javax.swing.JButton();
+        longterm = new javax.swing.JButton();
+        hintbox = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -192,18 +79,23 @@ public class Graphs extends javax.swing.JFrame {
             }
         });
 
-        Title.setText("Graphs");
+        Title.setText("Hints");
 
-        javax.swing.GroupLayout chartPanelLayout = new javax.swing.GroupLayout(chartPanel);
-        chartPanel.setLayout(chartPanelLayout);
-        chartPanelLayout.setHorizontalGroup(
-            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        chartPanelLayout.setVerticalGroup(
-            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        shortterm.setText("Short Term");
+        shortterm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shorttermActionPerformed(evt);
+            }
+        });
+
+        longterm.setText("Long Term");
+        longterm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                longtermActionPerformed(evt);
+            }
+        });
+
+        hintbox.setText("...");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -218,30 +110,39 @@ public class Graphs extends javax.swing.JFrame {
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(Title))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                        .addComponent(shortterm, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104)
+                        .addComponent(longterm, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(158, 158, 158))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 815, Short.MAX_VALUE))
+                        .addGap(283, 283, 283)
+                        .addComponent(Title)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(199, 199, 199)
+                .addComponent(hintbox)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(Title))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(539, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(longterm, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(shortterm, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addComponent(hintbox)
+                        .addGap(0, 189, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
@@ -283,6 +184,99 @@ public class Graphs extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    
+    private String formatHint(double current, double future, String name) {
+        if (future >= current) {
+            String s = "Buy ";
+            String e = "...";
+            return (s.concat(name).concat(e));
+        } else {
+            String s = "Sell ";
+            String e = ". If you do not own shares of ";
+            String f = ", do not buy any...";
+            return (s.concat(name).concat(e).concat(name).concat(f));
+        }
+        
+    }
+    
+    private void shorttermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shorttermActionPerformed
+        if (data.getVisited() == 1) {
+            hintbox.setText("Hint already claimed for today...");
+        } else {
+            if (data.getDay() == 22) {
+                hintbox.setText("No more Hints!");
+            } else {
+                data.setVisitedTrue();
+                Random rand = new Random();
+                int num = rand.nextInt(7);
+                switch (num) {
+                    case 0:
+                        hintbox.setText(formatHint(data.getAmazonClose(),data.getAmazonCloseTomorrow(),"Amazon"));
+                        break;
+                    case 1:
+                        hintbox.setText(formatHint(data.getAppleClose(),data.getAppleCloseTomorrow(),"Apple"));
+                        break;
+                    case 2:
+                        hintbox.setText(formatHint(data.getBroadcomClose(),data.getBroadcomCloseTomorrow(),"Broadcom"));
+                        break;
+                    case 3:
+                        hintbox.setText(formatHint(data.getGoogleClose(),data.getGoogleCloseTomorrow(),"Google"));
+                        break;
+                    case 4:
+                        hintbox.setText(formatHint(data.getQualcommClose(),data.getQualcommCloseTomorrow(),"Qualcomm"));
+                        break;
+                    case 5:
+                        hintbox.setText(formatHint(data.getMetaClose(),data.getMetaCloseTomorrow(),"Meta"));
+                        break;
+                    case 6:
+                        hintbox.setText(formatHint(data.getMicrosoftClose(),data.getMicrosoftCloseTomorrow(),"Microsoft"));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }//GEN-LAST:event_shorttermActionPerformed
+
+    private void longtermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_longtermActionPerformed
+        if (data.getVisited() == 1) {
+            hintbox.setText("Hint already claimed for today...");
+        } else {
+            if (data.getDay() == 22) {
+                hintbox.setText("No more Hints!");
+            } else {
+                data.setVisitedTrue();
+                Random rand = new Random();
+                int num = rand.nextInt(7);
+                switch (num) {
+                    case 0:
+                        hintbox.setText("Amazon will gradually rise...");
+                        break;
+                    case 1:
+                        hintbox.setText("Apple won't do much...");
+                        break;
+                    case 2:
+                        hintbox.setText("Broadcom won't do well...");
+                        break;
+                    case 3:
+                        hintbox.setText("Google promises steady returns with patience...");
+                        break;
+                    case 4:
+                        hintbox.setText("Qualcomm flops...");
+                        break;
+                    case 5:
+                        hintbox.setText("Meta does exceptionally...bad");
+                        break;
+                    case 6:
+                        hintbox.setText("Microsoft doesn't do much...");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }//GEN-LAST:event_longtermActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -300,31 +294,34 @@ public class Graphs extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Graphs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Hints.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Graphs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Hints.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Graphs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Hints.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Graphs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Hints.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Graphs().setVisible(true);
+                new Hints().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Title;
-    private javax.swing.JPanel chartPanel;
+    private javax.swing.JLabel hintbox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton longterm;
+    private javax.swing.JButton shortterm;
     // End of variables declaration//GEN-END:variables
 }

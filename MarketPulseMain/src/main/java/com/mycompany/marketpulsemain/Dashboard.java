@@ -22,7 +22,7 @@ public class Dashboard extends javax.swing.JFrame {
         user = User.getInstance();
 //        if (data.getVisited() == 0) {
         setup();
-        data.setVisitedTrue();
+//        data.setVisitedTrue();
 //        }
     }
     
@@ -46,9 +46,9 @@ public class Dashboard extends javax.swing.JFrame {
     private String formatHoldingsValue(double change, double old) {
 //        System.out.printf("%.2f, %.2f, %.2f%n", change, old, curr);
         if (change >= 0) {
-            return String.format("$%.2f (+$%.2f)", old+change+user.getTotalCash(), Math.abs(change));
+            return String.format("$%.2f (+$%.2f)", old+user.getTotalCash(), Math.abs(change));
         } else {
-            return String.format("$%.2f (-$%.2f)", old+change+user.getTotalCash(), (0-(change)));
+            return String.format("$%.2f (-$%.2f)", old+user.getTotalCash(), (0-(change)));
         }
     }
     
@@ -216,7 +216,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("News/Analysis");
+        jButton5.setText("Hints");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -295,7 +295,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -315,7 +315,7 @@ public class Dashboard extends javax.swing.JFrame {
                                     .addComponent(netholdings)
                                     .addComponent(totalcash)
                                     .addComponent(investmentvalue))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(3, 3, 3)
@@ -486,7 +486,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        News_Analysis_Hints newan = new News_Analysis_Hints();
+        Hints newan = new Hints();
         newan.show();
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed

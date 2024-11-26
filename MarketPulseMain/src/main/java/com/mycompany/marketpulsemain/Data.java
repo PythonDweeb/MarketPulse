@@ -193,6 +193,10 @@ public class Data {
     public double getAmazonCloseYesterday() {
         return amazonClose[day-1];
     }
+    
+    public double getAmazonCloseTomorrow() {
+        return amazonClose[day+1];
+    }
 
     public long getAmazonVolume() {
         return amazonVolume[day];
@@ -208,6 +212,10 @@ public class Data {
     
     public double getAppleCloseYesterday() {
         return appleClose[day-1];
+    }
+    
+    public double getAppleCloseTomorrow() {
+        return appleClose[day+1];
     }
 
     public long getAppleVolume() {
@@ -225,6 +233,10 @@ public class Data {
     public double getBroadcomCloseYesterday() {
         return broadcomClose[day-1];
     }
+    
+    public double getBroadcomCloseTomorrow() {
+        return broadcomClose[day+1];
+    }
 
     public long getBroadcomVolume() {
         return broadcomVolume[day];
@@ -240,6 +252,10 @@ public class Data {
     
     public double getGoogleCloseYesterday() {
         return googleClose[day-1];
+    }
+    
+    public double getGoogleCloseTomorrow() {
+        return googleClose[day+1];
     }
 
     public long getGoogleVolume() {
@@ -257,6 +273,10 @@ public class Data {
     public double getMetaCloseYesterday() {
         return metaClose[day-1];
     }
+    
+    public double getMetaCloseTomorrow() {
+        return metaClose[day+1];
+    }
 
     public long getMetaVolume() {
         return metaVolume[day];
@@ -273,7 +293,11 @@ public class Data {
     public double getMicrosoftCloseYesterday() {
         return microsoftClose[day-1];
     }
-
+    
+    public double getMicrosoftCloseTomorrow() {
+        return microsoftClose[day+1];
+    }
+    
     public long getMicrosoftVolume() {
         return microsoftVolume[day];
     }
@@ -288,6 +312,10 @@ public class Data {
     
     public double getQualcommCloseYesterday() {
         return qualcommClose[day-1];
+    }
+    
+    public double getQualcommCloseTomorrow() {
+        return qualcommClose[day+1];
     }
 
     public long getQualcommVolume() {
