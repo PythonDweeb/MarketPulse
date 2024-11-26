@@ -27,18 +27,28 @@ public class Dashboard extends javax.swing.JFrame {
     }
     
     private String formatContributionValue(double current, double difference) {
-        if (current > 0) {
-            return String.format("+%.2f%% (+$%.2f$)", current*100, difference);
+        if (current >= 0) {
+            return String.format("%.2f%% (+$%.2f)", current*100, Math.abs(difference));
         } else {
-            return String.format("%.2f%% (-$%.2f$)", current, (0-difference));
+            return String.format("%.2f%% (-$%.2f)", current, (0-difference));
         }
     }
     
     private String formatInvestmentValue(double change, double old, double curr) {
+//        System.out.printf("%.2f, %.2f, %.2f%n", change, old, curr);
         if (change >= 0) {
-            return String.format("%.2f (+%.2f%%)", curr, 100*change/old);
+            return String.format("$%.2f (+%.2f%%)", curr, Math.abs((100*change)/old));
         } else {
-            return String.format("%.2f%% (-$%.2f$)", curr, (0-100*change/old));
+            return String.format("$%.2f (-%.2f%%)", curr, (0-(change/old)*100));
+        }
+    }
+    
+    private String formatHoldingsValue(double change, double old) {
+//        System.out.printf("%.2f, %.2f, %.2f%n", change, old, curr);
+        if (change >= 0) {
+            return String.format("$%.2f (+$%.2f)", old+change+user.getTotalCash(), Math.abs(change));
+        } else {
+            return String.format("$%.2f (-$%.2f)", old+change+user.getTotalCash(), (0-(change)));
         }
     }
     
@@ -67,16 +77,17 @@ public class Dashboard extends javax.swing.JFrame {
         metacontribution.setText(formatContributionValue(0, metachange));
         microsoftcontribution.setText(formatContributionValue(0, microsoftchange));
         qualcommcontribution.setText(formatContributionValue(0, qualcommchange));
+        netholdings.setText(formatHoldingsValue(0,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
         if (data.getDay() > 0) {
-            applechange = user.getSharesInApple() * (data.getAppleClose() - data.getAmazonCloseYesterday());
-            amazonchange = user.getSharesInAmazon() * (data.getAmazonClose() - data.getAppleCloseYesterday()); 
+            applechange = user.getSharesInApple() * (data.getAppleClose() - data.getAppleCloseYesterday());
+            amazonchange = user.getSharesInAmazon() * (data.getAmazonClose() - data.getAmazonCloseYesterday()); 
             broadcomchange = user.getSharesInBroadcom() * (data.getBroadcomClose()-data.getBroadcomCloseYesterday());
             googlechange = user.getSharesInGoogle() * (data.getGoogleClose()-data.getGoogleCloseYesterday());
             metachange = user.getSharesInMeta() * (data.getMetaClose()-data.getMetaCloseYesterday());
             microsoftchange = user.getSharesInMicrosoft() * (data.getMicrosoftClose()-data.getMicrosoftCloseYesterday());
             qualcommchange = user.getSharesInQualcomm() * (data.getQualcommClose()-data.getQualcommCloseYesterday());
             totalchange = applechange + amazonchange + broadcomchange + googlechange + metachange + microsoftchange + qualcommchange;
-            investmentvalue.setText(formatInvestmentValue(totalchange,user.getSharesInApple() * data.getAmazonCloseYesterday() + user.getSharesInAmazon() * data.getAppleCloseYesterday()
+            investmentvalue.setText(formatInvestmentValue(totalchange,user.getSharesInApple() * data.getAppleCloseYesterday() + user.getSharesInAmazon() * data.getAmazonCloseYesterday()
         +user.getSharesInBroadcom() * data.getBroadcomCloseYesterday() + user.getSharesInGoogle() * data.getGoogleCloseYesterday() + user.getSharesInMicrosoft() * data.getMicrosoftCloseYesterday()
         +user.getSharesInMeta() * data.getMetaCloseYesterday() + user.getSharesInQualcomm() * data.getQualcommCloseYesterday(),appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
             amazoncontribution.setText(formatContributionValue(((data.getAmazonClose() - data.getAmazonCloseYesterday())/data.getAmazonCloseYesterday()), amazonchange));
@@ -86,6 +97,7 @@ public class Dashboard extends javax.swing.JFrame {
             metacontribution.setText(formatContributionValue(((data.getMetaClose() - data.getMetaCloseYesterday())/data.getMetaCloseYesterday()), metachange));
             microsoftcontribution.setText(formatContributionValue(((data.getMicrosoftClose() - data.getMicrosoftCloseYesterday())/data.getMicrosoftCloseYesterday()), microsoftchange));
             qualcommcontribution.setText(formatContributionValue(((data.getQualcommClose() - data.getQualcommCloseYesterday())/data.getQualcommCloseYesterday()), qualcommchange));
+            netholdings.setText(formatHoldingsValue(totalchange,appleval+amazonval+broadcomval+googleval+metaval+microsoftval+qualcommval));
         }
     }
 
